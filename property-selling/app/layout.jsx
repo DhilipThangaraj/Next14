@@ -1,9 +1,9 @@
 import "@/assets/styles/globals.css";
 
 export const metadata = {
-  title: "Property Selling",
-  keywords: "property, selling, real estate",
-  description: "Property selling website",
+  title: "Property Pulse",
+  keywords: "rental, property, real estate",
+  description: "Find the perfect rental property",
 };
 
 const MainLayout = ({ children }) => {
