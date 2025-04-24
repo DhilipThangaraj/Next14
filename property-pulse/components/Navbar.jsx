@@ -118,7 +118,7 @@ const Navbar = () => {
                   id="user-menu-button"
                   aria-expanded="false"
                   aria-haspopup="true"
-                  onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+                  onClick={() => {}}
                 >
                   <span className="absolute -inset-1.5"></span>
                   <span className="sr-only">Open user menu</span>
@@ -131,7 +131,7 @@ const Navbar = () => {
                   />
                 </button>
               </div>
-              <div
+              {/* <div
                 id="user-menu"
                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 role="menu"
@@ -168,47 +168,7 @@ const Navbar = () => {
                 >
                   Sign Out
                 </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="mobile-menu">
-        <div className="space-y-1 px-2 pb-3 pt-2">
-          <Link
-            href="/"
-            className={`${
-              true === "/" ? "bg-black" : ""
-            } text-white block rounded-md px-3 py-2 text-base font-medium`}
-          >
-            Home
-          </Link>
-          <Link
-            href="/properties"
-            className={`${
-              true === "/properties" ? "bg-black" : ""
-            } text-white block rounded-md px-3 py-2 text-base font-medium`}
-          >
-            Properties
-          </Link>
-          <Link
-            href="/properties/add"
-            className={`${
-              true === "/properties/add" ? "bg-black" : ""
-            } text-white block rounded-md px-3 py-2 text-base font-medium`}
-          >
-            Add Property
-          </Link>
-          <div className="block md:ml-6">
-            <div className="flex items-center">
-              <button
-                key={""}
-                onClick={() => {}}
-                className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-3"
-              >
-                <FaGoogle className="text-white mr-2" />
-                <span>Login or Register</span>
-              </button>
+              </div> */}
             </div>
           </div>
         </div>
