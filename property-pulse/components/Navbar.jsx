@@ -1,40 +1,47 @@
 "use client";
-
-import { useState } from "react";
-
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaGoogle } from "react-icons/fa";
 import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
+import { FaGoogle } from "react-icons/fa";
+import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
 const Navbar = () => {
+  const { data: session } = useSession();
+  console.log("????????session", session);
+  const profileImage = session?.user?.image;
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [providers, setProviders] = useState(null);
+
   const pathname = usePathname();
 
-  //Close mobile menu if the viewport size is changed
+  useEffect(() => {
+    const setAuthProviders = async () => {
+      const res = await getProviders();
+      console.log("???????res", res);
+      setProviders(res);
+    };
 
-  if (typeof window !== undefined) {
-    window.addEventListener("resize", () => {
-      setIsMobileMenuOpen(false);
-    });
-  }
+    setAuthProviders();
+  }, []);
 
   return (
     <nav className="bg-blue-700 border-b border-blue-500">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-20 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
+            {/* <!-- Mobile menu button--> */}
             <button
               type="button"
               id="mobile-dropdown-button"
               className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
               aria-controls="mobile-menu"
               aria-expanded="false"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
             >
               <span className="absolute -inset-0.5"></span>
               <span className="sr-only">Open main menu</span>
@@ -54,13 +61,17 @@ const Navbar = () => {
               </svg>
             </button>
           </div>
+
           <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
+            {/* <!-- Logo --> */}
             <Link className="flex flex-shrink-0 items-center" href="/">
               <Image className="h-10 w-auto" src={logo} alt="PropertyPulse" />
+
               <span className="hidden md:block text-white text-2xl font-bold ml-2">
                 PropertyPulse
               </span>
             </Link>
+            {/* <!-- Desktop Menu Hidden below md screens --> */}
             <div className="hidden md:ml-6 md:block">
               <div className="flex space-x-2">
                 <Link
@@ -79,7 +90,7 @@ const Navbar = () => {
                 >
                   Properties
                 </Link>
-                {isLoggedIn && (
+                {session && (
                   <Link
                     href="/properties/add"
                     className={`${
@@ -92,14 +103,14 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-          {/* Log out */}
-          {!isLoggedIn && (
+
+          {/* <!-- Right Side Menu (Logged Out) --> */}
+          {!session && (
             <div className="hidden md:block md:ml-6">
               <div className="flex items-center">
                 <button
-                  key={""}
-                  onClick={() => {}}
-                  className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-3"
+                  onClick={() => signIn()}
+                  className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
                 >
                   <FaGoogle className="text-white mr-2" />
                   <span>Login or Register</span>
@@ -108,7 +119,8 @@ const Navbar = () => {
             </div>
           )}
 
-          {isLoggedIn && (
+          {/* <!-- Right Side Menu (Logged In) --> */}
+          {session && (
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
               <Link href="/messages" className="relative group">
                 <button
@@ -132,7 +144,12 @@ const Navbar = () => {
                     />
                   </svg>
                 </button>
+                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                  2
+                  {/* <!-- Replace with the actual number of notifications --> */}
+                </span>
               </Link>
+              {/* <!-- Profile dropdown button --> */}
               <div className="relative ml-3">
                 <div>
                   <button
@@ -141,19 +158,20 @@ const Navbar = () => {
                     id="user-menu-button"
                     aria-expanded="false"
                     aria-haspopup="true"
-                    onClick={() => {}}
+                    onClick={() => setIsProfileMenuOpen((prev) => !prev)}
                   >
                     <span className="absolute -inset-1.5"></span>
                     <span className="sr-only">Open user menu</span>
                     <Image
                       className="h-8 w-8 rounded-full"
-                      src={profileDefault}
-                      alt=""
+                      src={profileImage || profileDefault}
                       width={40}
                       height={40}
+                      alt=""
                     />
                   </button>
                 </div>
+
                 {/* <!-- Profile dropdown --> */}
                 {isProfileMenuOpen && (
                   <div
@@ -170,9 +188,6 @@ const Navbar = () => {
                       role="menuitem"
                       tabIndex="-1"
                       id="user-menu-item-0"
-                      onClick={() => {
-                        setIsProfileMenuOpen(false);
-                      }}
                     >
                       Your Profile
                     </Link>
@@ -182,16 +197,10 @@ const Navbar = () => {
                       role="menuitem"
                       tabIndex="-1"
                       id="user-menu-item-2"
-                      onClick={() => {
-                        setIsProfileMenuOpen(false);
-                      }}
                     >
                       Saved Properties
                     </Link>
                     <button
-                      onClick={() => {
-                        setIsProfileMenuOpen(false);
-                      }}
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
                       tabIndex="-1"
@@ -206,6 +215,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
+
       {/* <!-- Mobile menu, show/hide based on menu state. --> */}
       {isMobileMenuOpen && (
         <div id="mobile-menu">
@@ -226,7 +236,7 @@ const Navbar = () => {
             >
               Properties
             </Link>
-            {isLoggedIn && (
+            {session && (
               <Link
                 href="/properties/add"
                 className={`${
@@ -236,20 +246,11 @@ const Navbar = () => {
                 Add Property
               </Link>
             )}
-
-            {!isLoggedIn && (
-              <div className="block md:ml-6">
-                <div className="flex items-center">
-                  <button
-                    key={""}
-                    onClick={() => {}}
-                    className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-3"
-                  >
-                    <FaGoogle className="text-white mr-2" />
-                    <span>Login or Register</span>
-                  </button>
-                </div>
-              </div>
+            {!session && (
+              <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4">
+                <i className="fa-brands fa-google mr-2"></i>
+                <span>Login or Register</span>
+              </button>
             )}
           </div>
         </div>
@@ -257,4 +258,5 @@ const Navbar = () => {
     </nav>
   );
 };
+
 export default Navbar;
