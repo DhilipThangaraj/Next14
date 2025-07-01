@@ -41,6 +41,10 @@ const BookmarkButton = ({ property }) => {
     });
   };
 
+  if (loading) {
+    return <p className="text-center">Loading...</p>;
+  }
+
   return isBookmarked ? (
     <button
       onClick={handleClick}

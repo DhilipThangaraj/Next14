@@ -1,10 +1,10 @@
-const { Schema, model, models } = require("mongoose");
+import { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema(
   {
     email: {
       type: String,
-      unique: [true, "Email is already exsist"],
+      unique: [true, "Email already exists"],
       required: [true, "Email is required"],
     },
     username: {
