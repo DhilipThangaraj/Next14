@@ -1,40 +1,35 @@
-import MessageCard from "@/components/MessageCard";
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
+import MessageCard from "@/components/MessageCard";
 import "@/models/Property";
-import { convertToSerializableObject } from "@/utils/convertToObject";
 import { getSessionUser } from "@/utils/getSessionUser";
+import { convertToSerializableObject } from "@/utils/convertToObject";
 
-const MessagesPage = async () => {
-  connectDB();
+const MessagePage = async () => {
+  await connectDB();
 
   const sessionUser = await getSessionUser();
 
   const { userId } = sessionUser;
+  console.log(userId);
 
-  const readMessages = await Message.find({
-    recipient: userId,
-    read: true,
-  })
-    .sort({
-      createdAt: -1,
-    })
+  const readMessages = await Message.find({ recipient: userId, read: true })
+    .sort({ createdAt: -1 }) // Sort read messages in asc order
     .populate("sender", "username")
     .populate("property", "name")
     .lean();
 
-  const unReadMessages = await Message.find({
+  const unreadMessages = await Message.find({
     recipient: userId,
     read: false,
   })
-    .sort({
-      createdAt: -1,
-    })
+    .sort({ createdAt: -1 }) // Sort read messages in asc order
     .populate("sender", "username")
     .populate("property", "name")
     .lean();
 
-  const messages = [...unReadMessages, ...readMessages].map((messageDoc) => {
+  // Convert to serializable object so we can pass to client component.
+  const messages = [...unreadMessages, ...readMessages].map((messageDoc) => {
     const message = convertToSerializableObject(messageDoc);
     message.sender = convertToSerializableObject(messageDoc.sender);
     message.property = convertToSerializableObject(messageDoc.property);
@@ -49,7 +44,7 @@ const MessagesPage = async () => {
 
           <div className="space-y-4">
             {messages.length === 0 ? (
-              <p>You have no message</p>
+              <p>You have no messages</p>
             ) : (
               messages.map((message) => (
                 <MessageCard key={message._id} message={message} />
@@ -61,5 +56,4 @@ const MessagesPage = async () => {
     </section>
   );
 };
-
-export default MessagesPage;
+export default MessagePage;
