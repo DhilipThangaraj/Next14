@@ -6,7 +6,7 @@ import Message from "@/models/Message";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 
-async function addMessage(formData) {
+async function addMessage(previousState, formData) {
   //Access all values from amenities and images
 
   await connectDB();
