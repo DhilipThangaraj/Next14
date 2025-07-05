@@ -3,7 +3,7 @@ import Message from "@/models/Message";
 import MessageCard from "@/components/MessageCard";
 import "@/models/Property";
 import { getSessionUser } from "@/utils/getSessionUser";
-import { convertToSerializeableObject } from "@/utils/convertToSerializableObject";
+import { convertToSerializeableObject } from "@/utils/converToObject";
 
 const MessagePage = async () => {
   await connectDB();

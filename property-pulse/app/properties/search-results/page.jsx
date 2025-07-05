@@ -2,7 +2,7 @@ import PropertyCard from "@/components/PropertyCard";
 import PropertySearchForm from "@/components/PropertySearchForm";
 import connectDB from "@/config/database";
 import Property from "@/models/Property";
-import { convertToSerializableObject } from "@/utils/convertToObject";
+import { convertToSerializeableObject } from "@/utils/converToObject";
 import Link from "next/link";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 

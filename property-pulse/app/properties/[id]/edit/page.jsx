@@ -1,7 +1,7 @@
 import PropertyEditForm from "@/components/PropertyEditForm";
 import connectDB from "@/config/database";
 import Property from "@/models/Property";
-import { convertToSerializableObject } from "@/utils/convertToObject";
+import { convertToSerializeableObject } from "@/utils/converToObject";
 
 const PropertyEditPage = async ({ params }) => {
   await connectDB();

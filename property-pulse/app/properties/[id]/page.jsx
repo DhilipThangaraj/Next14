@@ -6,7 +6,7 @@ import PropertyImages from "@/components/PropertyImages";
 import ShareButtons from "@/components/ShareButtons";
 import connectDB from "@/config/database";
 import Property from "@/models/Property";
-import { convertToSerializeableObject } from "@/utils/convertToSerializableObject";
+import { convertToSerializeableObject } from "@/utils/converToObject";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 

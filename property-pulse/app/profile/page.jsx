@@ -4,7 +4,7 @@ import { getSessionUser } from "@/utils/getSessionUser";
 import Image from "next/image";
 import ProfileDefault from "@/assets/images/profile.png";
 import ProfileProperties from "@/components/ProfileProperties";
-import { convertToSerializeableObject } from "@/utils/convertToSerializableObject";
+import { convertToSerializeableObject } from "@/utils/converToObject";
 
 const ProfilePage = async () => {
   await connectDB();
