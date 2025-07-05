@@ -31,7 +31,7 @@ const SearchResultsPage = async ({
 
   const propertiesQueryResults = await Property.find(query).lean();
 
-  const properties = convertToSerializableObject(propertiesQueryResults);
+  const properties = convertToSerializeableObject(propertiesQueryResults);
 
   return (
     <>
